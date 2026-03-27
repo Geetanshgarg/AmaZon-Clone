@@ -1,0 +1,3 @@
+{
+  "extends": "@AmaZon-Clone/config/tsconfig.base.json"
+}
