@@ -71,7 +71,7 @@ export const CartItem = ({ item }: CartItemProps) => {
 
         {/* Pricing */}
         <div className="flex flex-col items-end sm:items-start sm:min-w-[100px] font-bold text-lg pt-1">
-          ${(item.price * item.quantity).toFixed(2)}
+          ₹{(item.price * item.quantity).toFixed(2)}
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@ export default function CartPage() {
           <div className="flex justify-end pt-4">
             <span className="text-sm text-gray-700 font-medium">
               Subtotal ({cartCount} item{cartCount === 1 ? "" : "s"}):{" "}
-              <b className="text-lg">${items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0).toFixed(2)}</b>
+              <b className="text-lg">₹{items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0).toFixed(2)}</b>
             </span>
           </div>
         </section>

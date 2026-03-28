@@ -93,7 +93,7 @@ export const ProductCard = ({
           <div className="mt-1">
             <div className="flex items-center gap-2">
               <div className="flex items-start">
-                <span className="text-xs font-medium leading-none mt-[2px]">$</span>
+                <span className="text-xs font-medium leading-none mt-[2px]">₹</span>
                 <span className="text-[22px] font-medium leading-none tracking-tight">
                   {wholePart}
                 </span>
@@ -103,7 +103,7 @@ export const ProductCard = ({
               </div>
             </div>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-xs text-gray-500 line-through">${originalPrice.toFixed(2)}</span>
+              <span className="text-xs text-gray-500 line-through">₹{originalPrice.toFixed(2)}</span>
               <span className="text-xs text-[#CC0C39]">({discountPct}% off)</span>
             </div>
           </div>
@@ -126,14 +126,6 @@ export const ProductCard = ({
         </div>
       </Link>
 
-      {/* Add to Cart Button */}
-      <button
-        onClick={handleAddToCart}
-        disabled={stock === 0}
-        className="mt-3 w-full bg-[#ffd814] hover:bg-[#f7ca00] text-sm py-1.5 rounded-full cursor-pointer font-medium shadow-sm transition-colors border border-transparent hover:border-[#f2c200] disabled:bg-gray-200 disabled:cursor-not-allowed disabled:text-gray-500"
-      >
-        Add to Cart
-      </button>
     </div>
   );
 };

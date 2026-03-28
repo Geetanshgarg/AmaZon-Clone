@@ -11,7 +11,7 @@ export const OrderSummary = () => {
     <div className="bg-white p-6 rounded-md shadow-sm border border-gray-200">
       <div className="flex gap-2">
         <span className="text-sm">Subtotal ({cartCount} item{cartCount === 1 ? "" : "s"}):</span>
-        <span className="text-lg font-bold">${cartTotal.toFixed(2)}</span>
+        <span className="text-lg font-bold">₹{cartTotal.toFixed(2)}</span>
       </div>
       
       <div className="flex items-center gap-2 mt-2">

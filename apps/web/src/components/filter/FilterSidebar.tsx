@@ -13,11 +13,11 @@ interface FilterSidebarProps {
 }
 
 const PRICE_RANGES = [
-  { label: "Under $25", min: 0, max: 25 },
-  { label: "$25 to $50", min: 25, max: 50 },
-  { label: "$50 to $100", min: 50, max: 100 },
-  { label: "$100 to $200", min: 100, max: 200 },
-  { label: "$200 & Above", min: 200, max: undefined },
+  { label: "Under ₹500", min: 0, max: 500 },
+  { label: "₹500 to ₹1,000", min: 500, max: 1000 },
+  { label: "₹1,000 to ₹2,000", min: 1000, max: 2000 },
+  { label: "₹2,000 to ₹5,000", min: 2000, max: 5000 },
+  { label: "₹5,000 & Above", min: 5000, max: undefined },
 ];
 
 export const FilterSidebar = ({
@@ -131,7 +131,7 @@ export const FilterSidebar = ({
         <div className="flex items-center gap-1.5 mt-3">
           <input
             type="number"
-            placeholder="$ Min"
+            placeholder="Min ₹"
             value={customMin}
             onChange={(e) => setCustomMin(e.target.value)}
             className="w-[72px] p-1.5 border border-gray-300 rounded text-sm outline-none focus:border-[#e77600] focus:ring-1 focus:ring-[#e77600]"
@@ -139,7 +139,7 @@ export const FilterSidebar = ({
           <span className="text-gray-400 text-xs">–</span>
           <input
             type="number"
-            placeholder="$ Max"
+            placeholder="Max ₹"
             value={customMax}
             onChange={(e) => setCustomMax(e.target.value)}
             className="w-[72px] p-1.5 border border-gray-300 rounded text-sm outline-none focus:border-[#e77600] focus:ring-1 focus:ring-[#e77600]"

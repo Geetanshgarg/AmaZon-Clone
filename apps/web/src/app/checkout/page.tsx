@@ -16,14 +16,14 @@ export default function CheckoutPage() {
 
   const deliveryDate = new Date();
   deliveryDate.setDate(deliveryDate.getDate() + 3);
-  const deliveryStr = deliveryDate.toLocaleDateString("en-US", {
+  const deliveryStr = deliveryDate.toLocaleDateString("en-IN", {
     weekday: "long",
     day: "numeric",
     month: "short",
     year: "numeric",
   });
 
-  const orderTotal = cartTotal * 1.08;
+  const orderTotal = cartTotal * 1.18;
 
   const handlePlaceOrder = async () => {
     if (!session) {
@@ -75,9 +75,9 @@ export default function CheckoutPage() {
           <div className="bg-white rounded-lg border border-gray-200 px-5 py-4">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-base font-bold text-gray-900">Delivering to John Doe</h3>
+                <h3 className="text-base font-bold text-gray-900">Delivering to {session?.user.name || "Customer"}</h3>
                 <p className="text-sm text-gray-600 mt-0.5">
-                  123 Main Street, Suite 400, New York, NY 10001, United States
+                  Flat No. 402, Shiv Shakti Apartments, Worli Sea Face, Mumbai, MH 400018, India
                 </p>
                 <button className="text-xs text-[#007185] hover:text-[#c45500] hover:underline mt-1.5 cursor-pointer">
                   Add delivery instructions
@@ -93,7 +93,7 @@ export default function CheckoutPage() {
           <div className="bg-white rounded-lg border border-gray-200 px-5 py-4">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-base font-bold text-gray-900">Pay on delivery (Cash/Card)</h3>
+                <h3 className="text-base font-bold text-gray-900">Pay on Delivery (Cash/UPI/Card)</h3>
                 <p className="text-sm text-[#007185] mt-1 hover:text-[#c45500] hover:underline cursor-pointer">
                   Use a gift card, voucher or promo code
                 </p>
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
                     >
                       {item.name}
                     </Link>
-                    <p className="text-base font-bold mt-1">${Number(item.price).toFixed(2)}</p>
+                    <p className="text-base font-bold mt-1">₹{Number(item.price).toFixed(2)}</p>
                     <div className="flex items-center gap-1 mt-0.5">
                       <span className="text-xs text-[#007600] font-medium">✓ prime</span>
                     </div>
@@ -155,7 +155,7 @@ export default function CheckoutPage() {
                       Ships from AmaZon <span className="font-medium text-gray-700">| Fulfilled</span>
                     </p>
                     <p className="text-xs text-gray-500">
-                      Sold by <span className="text-[#007185] hover:underline cursor-pointer">AmaZon.com</span>
+                      Sold by <span className="text-[#007185] hover:underline cursor-pointer">AmaZon.in</span>
                     </p>
 
                     {/* Delivery option */}
@@ -219,7 +219,7 @@ export default function CheckoutPage() {
                 {loading ? "Placing Order..." : "Place your order"}
               </button>
               <div>
-                <span className="text-lg font-bold">Order Total: ${orderTotal.toFixed(2)}</span>
+                <span className="text-lg font-bold">Order Total: ₹{orderTotal.toFixed(2)}</span>
                 <p className="text-xs text-gray-500 mt-0.5">
                   By placing your order, you agree to AmaZon&apos;s{" "}
                   <span className="text-[#007185] hover:underline cursor-pointer">privacy notice</span> and{" "}
@@ -278,15 +278,15 @@ export default function CheckoutPage() {
               <div className="text-sm space-y-1.5">
                 <div className="flex justify-between">
                   <span className="text-gray-700">Items:</span>
-                  <span>${cartTotal.toFixed(2)}</span>
+                  <span>₹{cartTotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Delivery:</span>
-                  <span>$0.00</span>
+                  <span>₹0.00</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-700">Estimated tax:</span>
-                  <span>${(cartTotal * 0.08).toFixed(2)}</span>
+                  <span className="text-gray-700">Estimated GST (18%):</span>
+                  <span>₹{(cartTotal * 0.18).toFixed(2)}</span>
                 </div>
               </div>
 
@@ -294,7 +294,7 @@ export default function CheckoutPage() {
 
               <div className="flex justify-between text-lg font-bold text-[#B12704]">
                 <span>Order Total:</span>
-                <span>${orderTotal.toFixed(2)}</span>
+                <span>₹{orderTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -315,7 +315,7 @@ export default function CheckoutPage() {
             <span className="hover:text-white cursor-pointer hover:underline">Privacy Notice</span>
             <span className="hover:text-white cursor-pointer hover:underline">Interest-Based Ads</span>
           </div>
-          <p className="text-xs text-gray-500 mt-2">© 1996-2026, AmaZon.com, Inc. or its affiliates</p>
+          <p className="text-xs text-gray-500 mt-2">© 1996-2026, AmaZon.in, Inc. or its affiliates</p>
         </div>
       </footer>
     </div>
