@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCartStore, type CartItem as ICartItem } from "../../store/useCartStore";
+import { formatPrice } from "../../lib/utils";
 
 interface CartItemProps {
   item: ICartItem;
@@ -71,7 +72,7 @@ export const CartItem = ({ item }: CartItemProps) => {
 
         {/* Pricing */}
         <div className="flex flex-col items-end sm:items-start sm:min-w-[100px] font-bold text-lg pt-1">
-          ₹{(item.price * item.quantity).toFixed(2)}
+          {formatPrice(item.price * item.quantity)}
         </div>
       </div>
     </div>

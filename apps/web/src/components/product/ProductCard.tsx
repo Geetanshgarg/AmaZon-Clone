@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { useCartStore } from "../../store/useCartStore";
 import { authClient } from "../../lib/auth-client";
+import { formatPrice } from "../../lib/utils";
 
 interface ProductProps {
   id: string;
@@ -43,8 +44,9 @@ export const ProductCard = ({
     }
   };
 
-  const wholePart = Math.floor(price);
-  const decimalPart = (price % 1).toFixed(2).substring(2);
+  const formattedPriceParts = formatPrice(price).split(".");
+  const wholePartStr = formattedPriceParts[0].replace("₹", "");
+  const decimalPartStr = formattedPriceParts[1] || "00";
   const originalPrice = price * 1.3;
   const discountPct = Math.round((1 - price / originalPrice) * 100);
 
@@ -95,15 +97,15 @@ export const ProductCard = ({
               <div className="flex items-start">
                 <span className="text-xs font-medium leading-none mt-[2px]">₹</span>
                 <span className="text-[22px] font-medium leading-none tracking-tight">
-                  {wholePart}
+                  {wholePartStr}
                 </span>
                 <span className="text-xs font-medium leading-none mt-[2px]">
-                  {decimalPart}
+                  {decimalPartStr}
                 </span>
               </div>
             </div>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-xs text-gray-500 line-through">₹{originalPrice.toFixed(2)}</span>
+              <span className="text-xs text-gray-500 line-through">{formatPrice(originalPrice)}</span>
               <span className="text-xs text-[#CC0C39]">({discountPct}% off)</span>
             </div>
           </div>

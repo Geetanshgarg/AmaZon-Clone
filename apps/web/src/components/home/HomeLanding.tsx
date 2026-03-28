@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductService } from "../../services/api";
+import { formatPrice } from "../../lib/utils";
 
 interface HomeLandingProps {
   categories: any[];
@@ -229,8 +230,8 @@ export const HomeLanding = ({ categories }: HomeLandingProps) => {
                                 <span className="text-[#CC0C39] text-[12px] font-bold">Deal</span>
                             </div>
                             <span className="text-sm font-bold truncate w-full">{product.name}</span>
-                            <span className="text-sm font-bold">₹{Math.floor(Number(product.price)).toLocaleString()}</span>
-                            <span className="text-xs text-gray-500 line-through">₹{Math.floor(Number(product.price) * 1.3).toLocaleString()}</span>
+                            <span className="text-sm font-bold">{formatPrice(product.price)}</span>
+                            <span className="text-xs text-gray-500 line-through">{formatPrice(product.price * 1.3)}</span>
                         </div>
                     </Link>
                   ))
@@ -245,8 +246,8 @@ export const HomeLanding = ({ categories }: HomeLandingProps) => {
                                 <span className="bg-[#CC0C39] text-white text-[11px] font-bold px-1.5 py-0.5 rounded-sm">Up to 40% off</span>
                                 <span className="text-[#CC0C39] text-[12px] font-bold">Deal</span>
                             </div>
-                            <span className="text-sm font-bold">₹{(1999 + i * 200).toLocaleString()}</span>
-                            <span className="text-xs text-gray-500 line-through">₹{(2999 + i * 200).toLocaleString()}</span>
+                            <span className="text-sm font-bold">{formatPrice(1999 + i * 200)}</span>
+                            <span className="text-xs text-gray-500 line-through">{formatPrice(2999 + i * 200)}</span>
                         </div>
                     </div>
                   ))

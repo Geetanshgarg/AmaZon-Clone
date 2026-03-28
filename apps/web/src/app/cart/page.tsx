@@ -4,6 +4,7 @@ import { useCartStore } from "../../store/useCartStore";
 import { CartItem } from "../../components/cart/CartItem";
 import { OrderSummary } from "../../components/cart/OrderSummary";
 import { Navbar } from "../../components/layout/Navbar";
+import { formatPrice } from "../../lib/utils";
 
 export default function CartPage() {
   const { items, cartCount } = useCartStore();
@@ -36,7 +37,7 @@ export default function CartPage() {
           <div className="flex justify-end pt-4">
             <span className="text-sm text-gray-700 font-medium">
               Subtotal ({cartCount} item{cartCount === 1 ? "" : "s"}):{" "}
-              <b className="text-lg">₹{items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0).toFixed(2)}</b>
+              <b className="text-lg">{formatPrice(items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0))}</b>
             </span>
           </div>
         </section>

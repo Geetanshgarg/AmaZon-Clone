@@ -8,6 +8,7 @@ import { Navbar } from "../../../components/layout/Navbar";
 import { authClient } from "../../../lib/auth-client";
 import { Star, MapPin, ShieldCheck, RotateCcw, Truck, Check } from "lucide-react";
 import Link from "next/link";
+import { formatPrice } from "../../../lib/utils";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -114,6 +115,10 @@ export default function ProductDetailPage() {
   const originalPrice = Number(product.price) * 1.35;
   const discountPct = Math.round((1 - Number(product.price) / originalPrice) * 100);
 
+  const formattedPriceParts = formatPrice(Number(product.price)).split(".");
+  const wholePartStr = formattedPriceParts[0].replace("₹", "");
+  const decimalPartStr = formattedPriceParts[1] || "00";
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
@@ -207,18 +212,18 @@ export default function ProductDetailPage() {
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-[#CC0C39] text-2xl font-medium">-{discountPct}%</span>
                 <div className="flex items-start">
-                  <span className="text-sm align-top mt-1">$</span>
+                  <span className="text-sm align-top mt-1">₹</span>
                   <span className="text-[32px] leading-none font-medium tracking-tight">
-                    {Math.floor(Number(product.price))}
+                    {wholePartStr}
                   </span>
                   <span className="text-sm align-top mt-1">
-                    {(Number(product.price) % 1).toFixed(2).substring(2)}
+                    {decimalPartStr}
                   </span>
                 </div>
               </div>
 
               <div className="text-sm text-gray-600">
-                M.R.P.: <span className="line-through">${originalPrice.toFixed(2)}</span>
+                M.R.P.: <span className="line-through">{formatPrice(originalPrice)}</span>
               </div>
 
               <p className="text-xs text-gray-500 mt-1">Inclusive of all taxes</p>
@@ -230,7 +235,7 @@ export default function ProductDetailPage() {
               <div className="flex flex-col gap-2">
                 <div className="flex items-start gap-2">
                   <span className="bg-[#CC0C39] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm shrink-0 mt-0.5">Sale</span>
-                  <p className="text-sm text-gray-800">Get <b>10% instant discount</b> on orders above $50</p>
+                  <p className="text-sm text-gray-800">Get <b>10% instant discount</b> on orders above ₹4,000</p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="bg-[#CC0C39] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm shrink-0 mt-0.5">Sale</span>
@@ -307,17 +312,17 @@ export default function ProductDetailPage() {
             <div className="border border-gray-300 rounded-lg p-5 sticky top-20">
               {/* Price in buy box */}
               <div className="flex items-start mb-1">
-                <span className="text-sm align-top mt-1">$</span>
+                <span className="text-sm align-top mt-1">₹</span>
                 <span className="text-[28px] leading-none font-medium tracking-tight">
-                  {Math.floor(Number(product.price))}
+                  {wholePartStr}
                 </span>
                 <span className="text-sm align-top mt-1">
-                  {(Number(product.price) % 1).toFixed(2).substring(2)}
+                  {decimalPartStr}
                 </span>
               </div>
 
               <p className="text-xs text-gray-500 mb-2">
-                M.R.P.: <span className="line-through">${originalPrice.toFixed(2)}</span>
+                M.R.P.: <span className="line-through">{formatPrice(originalPrice)}</span>
                 <span className="ml-1">({discountPct}% off)</span>
               </p>
 

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ShoppingCart, Lock, AlertTriangle, Minus, Plus, Trash2 } from "lucide-react";
+import { formatPrice } from "../../lib/utils";
 
 export default function CheckoutPage() {
   const { items, cartCount, cartTotal, clearCart, updateQuantity, removeItem } = useCartStore();
@@ -147,7 +148,7 @@ export default function CheckoutPage() {
                     >
                       {item.name}
                     </Link>
-                    <p className="text-base font-bold mt-1">₹{Number(item.price).toFixed(2)}</p>
+                    <p className="text-base font-bold mt-1">{formatPrice(Number(item.price))}</p>
                     <div className="flex items-center gap-1 mt-0.5">
                       <span className="text-xs text-[#007600] font-medium">✓ prime</span>
                     </div>
@@ -219,7 +220,7 @@ export default function CheckoutPage() {
                 {loading ? "Placing Order..." : "Place your order"}
               </button>
               <div>
-                <span className="text-lg font-bold">Order Total: ₹{orderTotal.toFixed(2)}</span>
+                <span className="text-lg font-bold">Order Total: {formatPrice(orderTotal)}</span>
                 <p className="text-xs text-gray-500 mt-0.5">
                   By placing your order, you agree to AmaZon&apos;s{" "}
                   <span className="text-[#007185] hover:underline cursor-pointer">privacy notice</span> and{" "}
@@ -278,15 +279,15 @@ export default function CheckoutPage() {
               <div className="text-sm space-y-1.5">
                 <div className="flex justify-between">
                   <span className="text-gray-700">Items:</span>
-                  <span>₹{cartTotal.toFixed(2)}</span>
+                  <span>{formatPrice(cartTotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Delivery:</span>
-                  <span>₹0.00</span>
+                  <span>{formatPrice(0)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-700">Estimated GST (18%):</span>
-                  <span>₹{(cartTotal * 0.18).toFixed(2)}</span>
+                  <span>{formatPrice(cartTotal * 0.18)}</span>
                 </div>
               </div>
 
@@ -294,7 +295,7 @@ export default function CheckoutPage() {
 
               <div className="flex justify-between text-lg font-bold text-[#B12704]">
                 <span>Order Total:</span>
-                <span>₹{orderTotal.toFixed(2)}</span>
+                <span>{formatPrice(orderTotal)}</span>
               </div>
             </div>
           </div>
