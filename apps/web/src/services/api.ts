@@ -1,7 +1,7 @@
 import { env } from "@AmaZon-Clone/env/web";
-const API_BASE_URL = env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000/api';
-console.log(API_BASE_URL);
-console.log(env.NEXT_PUBLIC_SERVER_URL);
+const API_BASE_URL = env.NEXT_PUBLIC_SERVER_URL + "/api" || 'http://localhost:3000/api';
+// console.log(API_BASE_URL);
+// console.log(env.NEXT_PUBLIC_SERVER_URL);
 export const api = {
   get: async (endpoint: string) => {
     const res = await fetch(`${API_BASE_URL}${endpoint}`, { credentials: "include" });
