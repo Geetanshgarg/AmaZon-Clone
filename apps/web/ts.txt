@@ -1,0 +1,1 @@
+src/app/checkout/page.tsx(19,19): error TS2345: Argument of type '"/orders/success"' is not assignable to parameter of type 'RouteImpl<"/orders/success">'.
