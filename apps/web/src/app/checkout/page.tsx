@@ -2,6 +2,7 @@
 
 import { useCartStore } from "../../store/useCartStore";
 import { OrderService } from "../../services/api";
+import { authClient } from "../../lib/auth-client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -11,6 +12,7 @@ export default function CheckoutPage() {
   const { items, cartCount, cartTotal, clearCart, updateQuantity, removeItem } = useCartStore();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
 
   const deliveryDate = new Date();
   deliveryDate.setDate(deliveryDate.getDate() + 3);
@@ -24,6 +26,10 @@ export default function CheckoutPage() {
   const orderTotal = cartTotal * 1.08;
 
   const handlePlaceOrder = async () => {
+    if (!session) {
+      router.push("/login");
+      return;
+    }
     setLoading(true);
     try {
       await OrderService.createOrder({

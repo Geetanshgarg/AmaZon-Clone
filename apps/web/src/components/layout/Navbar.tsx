@@ -71,10 +71,10 @@ export const Navbar = () => {
         )}
 
         {/* Returns & Orders */}
-        <div className="hidden lg:flex flex-col p-2 border border-transparent hover:border-white rounded-sm cursor-pointer leading-tight whitespace-nowrap">
+        <Link href="/orders" className="hidden lg:flex flex-col p-2 border border-transparent hover:border-white rounded-sm cursor-pointer leading-tight whitespace-nowrap">
           <span className="text-xs">Returns</span>
           <span className="text-sm font-bold">& Orders</span>
-        </div>
+        </Link>
 
         {/* Cart */}
         <Link href="/cart" className="flex items-center p-2 border border-transparent hover:border-white rounded-sm">

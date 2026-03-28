@@ -9,7 +9,7 @@ VALUES
 ON CONFLICT ("slug") DO NOTHING;
 
 -- Insert Products
-INSERT INTO "product" ("id", "name", "slug", "description", "price", "stock", "imageUrl", "categoryId", "createdAt", "updatedAt")
+INSERT INTO "product" ("id", "name", "slug", "description", "price", "stock", "images", "categoryId", "rating", "reviewsCount", "createdAt", "updatedAt")
 VALUES 
   (
     'prod_headphones_01', 
@@ -18,8 +18,10 @@ VALUES
     'High quality noise-cancelling wireless headphones with 30-hour battery life. Premium sound quality with deep bass. Comfortable over-ear design for all-day wear.', 
     199.99, 
     50, 
-    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80', 
+    ARRAY['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80', 'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&q=80', 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&q=80'], 
     'cat_electronics_01', 
+    4.5,
+    1240,
     NOW(), 
     NOW()
   ),
@@ -30,8 +32,10 @@ VALUES
     'RGB mechanical keyboard with tactile blue switches. Full anti-ghosting with N-key rollover. Durable construction for competitive gaming.', 
     89.50, 
     120, 
-    'https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80', 
+    ARRAY['https://images.unsplash.com/photo-1595225476474-87563907a212?w=800&q=80', 'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=800&q=80', 'https://images.unsplash.com/photo-1541140134513-85a161dc4a00?w=800&q=80'], 
     'cat_electronics_01', 
+    4.8,
+    582,
     NOW(), 
     NOW()
   ),
@@ -42,21 +46,11 @@ VALUES
     'An insider''s guide to system design interviews. Learn how to design large-scale distributed systems. Covers all major topics from load balancing to database sharding.', 
     35.99, 
     200, 
-    'https://images.unsplash.com/photo-1589998059171-988d887df646?w=800&q=80', 
+    ARRAY['https://images.unsplash.com/photo-1589998059171-988d887df646?w=800&q=80', 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&q=80', 'https://images.unsplash.com/photo-1543004629-ff56951feee2?w=800&q=80'], 
     'cat_books_01', 
+    4.9,
+    4201,
     NOW(), 
-    NOW()
-  ),
-  (
-    'prod_yogamat_01',
-    'Yoga Mat',
-    'yoga-mat',
-    'Non-slip yoga mat for fitness and meditation. Extra thick 6mm cushioning for joint protection. Eco-friendly materials with carrying strap included.',
-    25.50,
-    80,
-    'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=800&q=80',
-    'cat_sports_01',
-    NOW(),
     NOW()
   ),
   (
@@ -66,8 +60,24 @@ VALUES
     'Advanced fitness tracker with heart rate monitoring, GPS tracking, and sleep analysis. Water-resistant up to 50 meters with 7-day battery life.',
     149.99,
     35,
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80', 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&q=80', 'https://images.unsplash.com/photo-1508685096489-77a4283b5429?w=800&q=80'],
     'cat_electronics_01',
+    4.3,
+    512,
+    NOW(),
+    NOW()
+  ),
+  (
+    'prod_yogamat_01',
+    'Yoga Mat',
+    'yoga-mat',
+    'Non-slip yoga mat for fitness and meditation. Extra thick 6mm cushioning for joint protection. Eco-friendly materials with carrying strap included.',
+    25.50,
+    80,
+    ARRAY['https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=800&q=80', 'https://images.unsplash.com/photo-1592432676556-38174f0bd9f1?w=800&q=80'],
+    'cat_sports_01',
+    4.7,
+    1244,
     NOW(),
     NOW()
   ),
@@ -78,8 +88,10 @@ VALUES
     '12-cup programmable drip coffee maker with thermal carafe. Auto brew timer and strength control. Built-in water filtration system.',
     79.99,
     60,
-    'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=800&q=80', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80'],
     'cat_home_01',
+    4.2,
+    342,
     NOW(),
     NOW()
   ),
@@ -90,8 +102,10 @@ VALUES
     'Water-resistant laptop backpack with USB charging port. Fits up to 17-inch laptops with anti-theft design. Multiple compartments for organized storage.',
     45.99,
     150,
-    'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80', 'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=800&q=80'],
     'cat_clothing_01',
+    4.1,
+    215,
     NOW(),
     NOW()
   ),
@@ -102,8 +116,10 @@ VALUES
     'Ergonomic vertical mouse with adjustable DPI. Reduces wrist strain with natural hand position. Silent click buttons with long battery life.',
     34.99,
     90,
-    'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&q=80', 'https://images.unsplash.com/photo-1615663248861-2446a84aa5ff?w=800&q=80'],
     'cat_electronics_01',
+    4.6,
+    92,
     NOW(),
     NOW()
   ),
@@ -114,8 +130,10 @@ VALUES
     'A gripping tale of discovery and adventure across uncharted territories. Bestselling fiction that will keep you turning pages until the very end.',
     14.99,
     300,
-    'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800&q=80', 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&q=80'],
     'cat_books_01',
+    4.8,
+    765,
     NOW(),
     NOW()
   ),
@@ -126,8 +144,10 @@ VALUES
     'Adjustable dumbbells from 5 to 52.5 lbs. Quick-change weight system. Space-saving design replaces 15 sets of traditional dumbbells.',
     299.99,
     25,
-    'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80', 'https://images.unsplash.com/photo-1583454110551-21f2fa2adfcd?w=800&q=80'],
     'cat_sports_01',
+    4.4,
+    1233,
     NOW(),
     NOW()
   ),
@@ -138,8 +158,10 @@ VALUES
     'Professional-grade blender with variable speed control. Makes smoothies, soups, nut butters, and more. BPA-free Tritan pitcher with self-cleaning function.',
     129.99,
     45,
-    'https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=800&q=80', 'https://images.unsplash.com/photo-1585238341258-390400033669?w=800&q=80'],
     'cat_home_01',
+    4.7,
+    156,
     NOW(),
     NOW()
   ),
@@ -150,8 +172,10 @@ VALUES
     'Waterproof portable speaker with 360-degree sound. 20-hour battery life with deep bass. Perfect for outdoor adventures and pool parties.',
     59.99,
     100,
-    'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80',
+    ARRAY['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80', 'https://images.unsplash.com/photo-1601944114954-463a9d394e58?w=800&q=80'],
     'cat_electronics_01',
+    4.6,
+    2150,
     NOW(),
     NOW()
   )

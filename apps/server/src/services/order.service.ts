@@ -81,6 +81,7 @@ export const getOrders = async (userId: string): Promise<any> => {
     where: { userId },
     orderBy: { createdAt: "desc" },
     include: {
+      user: true,
       orderItems: {
         include: {
           product: true,

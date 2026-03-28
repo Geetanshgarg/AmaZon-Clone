@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { ProductService } from "../../../services/api";
 import { useCartStore } from "../../../store/useCartStore";
 import { Navbar } from "../../../components/layout/Navbar";
+import { authClient } from "../../../lib/auth-client";
 import { Star, MapPin, ShieldCheck, RotateCcw, Truck, Check } from "lucide-react";
 import Link from "next/link";
 
@@ -15,8 +16,10 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [selectedQty, setSelectedQty] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
 
   const addItem = useCartStore((state) => state.addItem);
+  const { data: session } = authClient.useSession();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,12 +36,16 @@ export default function ProductDetailPage() {
   }, [id]);
 
   const handleAddToCart = () => {
+    if (!session) {
+      router.push("/login");
+      return;
+    }
     for (let i = 0; i < selectedQty; i++) {
       addItem({
         id: product.id,
         name: product.name,
         price: Number(product.price),
-        imageUrl: product.imageUrl || "",
+        imageUrl: product.images?.[0] || "",
       });
     }
     setAddedToCart(true);
@@ -46,6 +53,10 @@ export default function ProductDetailPage() {
   };
 
   const handleBuyNow = () => {
+    if (!session) {
+      router.push("/login");
+      return;
+    }
     handleAddToCart();
     router.push("/checkout");
   };
@@ -98,8 +109,8 @@ export default function ProductDetailPage() {
     );
   }
 
-  const rating = 4.2;
-  const reviewCount = 1489;
+  const rating = Number(product.rating || 4.2);
+  const reviewCount = Number(product.reviewsCount || 0);
   const originalPrice = Number(product.price) * 1.35;
   const discountPct = Math.round((1 - Number(product.price) / originalPrice) * 100);
 
@@ -128,27 +139,33 @@ export default function ProductDetailPage() {
               {/* Main Image */}
               <div className="border border-gray-200 rounded-md overflow-hidden bg-white flex items-center justify-center p-6 min-h-[400px] max-h-[500px]">
                 <img
-                  src={product.imageUrl || "https://placehold.co/600"}
+                  src={product.images?.[activeImage] || "https://placehold.co/600"}
                   alt={product.name}
+                  decoding="async"
                   className="max-w-full max-h-[450px] object-contain mix-blend-multiply hover:scale-105 transition-transform duration-300 cursor-zoom-in"
                 />
               </div>
 
-              {/* Thumbnail strip placeholder */}
-              <div className="flex gap-2 mt-3 overflow-x-auto">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className={`w-14 h-14 border-2 ${i === 1 ? "border-[#e77600]" : "border-gray-200 hover:border-[#e77600]"} rounded-md overflow-hidden bg-white flex items-center justify-center p-1 cursor-pointer transition-colors`}
-                  >
-                    <img
-                      src={product.imageUrl || "https://placehold.co/100"}
-                      alt={`Thumbnail ${i}`}
-                      className="max-w-full max-h-full object-contain opacity-90"
-                    />
-                  </div>
-                ))}
-              </div>
+              {/* Thumbnail strip */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                  {product.images.map((img: string, i: number) => (
+                    <div
+                      key={i}
+                      onMouseEnter={() => setActiveImage(i)}
+                      className={`w-14 h-14 border-2 transition-all ${i === activeImage ? "border-[#e77600] shadow-[0_0_5px_rgba(231,118,0,0.5)]" : "border-gray-200 hover:border-[#e77600]"} rounded-md overflow-hidden bg-white flex items-center justify-center p-1 cursor-pointer`}
+                    >
+                      <img
+                        src={img}
+                        alt={`Thumbnail ${i}`}
+                        loading="lazy"
+                        decoding="async"
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

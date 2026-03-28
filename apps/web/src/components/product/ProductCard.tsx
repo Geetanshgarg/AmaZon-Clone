@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { useCartStore } from "../../store/useCartStore";
+import { authClient } from "../../lib/auth-client";
 
 interface ProductProps {
   id: string;
   name: string;
-  imageUrl: string | null;
+  images: string[];
   price: number;
   stock: number;
   rating?: number;
@@ -18,20 +20,26 @@ interface ProductProps {
 export const ProductCard = ({
   id,
   name,
-  imageUrl,
+  images,
   price,
   stock,
-  rating = 4.2 + Math.random() * 0.8,
-  reviewsCount = Math.floor(100 + Math.random() * 2000),
+  rating,
+  reviewsCount,
   categoryName,
 }: ProductProps) => {
   const addItem = useCartStore((state) => state.addItem);
+  const { data: session } = authClient.useSession();
+  const router = useRouter();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (!session) {
+      router.push("/login");
+      return;
+    }
     if (stock > 0) {
-      addItem({ id, name, price: Number(price), imageUrl: imageUrl || "" });
+      addItem({ id, name, price: Number(price), imageUrl: images[0] || "" });
     }
   };
 
@@ -46,8 +54,10 @@ export const ProductCard = ({
         {/* Product Image */}
         <div className="relative h-52 w-full mb-3 overflow-hidden flex items-center justify-center bg-white">
           <img
-            src={imageUrl || "https://placehold.co/400"}
+            src={images[0] || "https://placehold.co/400"}
             alt={name}
+            loading="lazy"
+            decoding="async"
             className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
           />
         </div>
@@ -70,12 +80,12 @@ export const ProductCard = ({
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`h-[14px] w-[14px] ${i < Math.floor(rating) ? "fill-current" : ""}`}
+                  className={`h-[14px] w-[14px] ${i < Math.floor(rating || 0) ? "fill-current" : ""}`}
                 />
               ))}
             </div>
             <span className="text-[#007185] hover:text-[#c45500] text-xs cursor-pointer">
-              {reviewsCount.toLocaleString()}
+              {(reviewsCount || 0).toLocaleString()}
             </span>
           </div>
 

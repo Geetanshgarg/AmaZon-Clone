@@ -57,10 +57,12 @@ export const ProductGrid = ({ products, loading, error }: ProductGridProps) => {
           key={product.id}
           id={product.id}
           name={product.name}
-          imageUrl={product.imageUrl}
+          images={product.images}
           price={Number(product.price)}
           stock={product.stock}
           categoryName={product.category?.name}
+          rating={Number(product.rating)}
+          reviewsCount={product.reviewsCount}
         />
       ))}
     </div>
