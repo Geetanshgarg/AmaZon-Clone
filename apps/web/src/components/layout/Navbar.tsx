@@ -92,6 +92,21 @@ const NavbarContent = () => {
     router.push(`/?${params.toString()}`);
   };
 
+  const handleLogout = async () => {
+    try {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push("/login"); // Redirect to login after sign out
+            setIsSidebarOpen(false);
+          },
+        },
+      });
+    } catch (error) {
+      console.error("Sign out failed", error);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full flex flex-col bg-[#131921] text-white">
       {/* ═══ Top Row ═══ */}
@@ -205,19 +220,35 @@ const NavbarContent = () => {
         {/* Right Side Icons */}
         <div className="flex items-center gap-0.5 md:gap-1">
           {/* Account */}
-          <Link
-            href={session ? "/orders" : ("/login" as any)}
-            className="flex items-center p-2 border border-transparent hover:border-white rounded-sm leading-tight whitespace-nowrap group relative"
-          >
-            <div className="md:hidden flex items-center gap-1">
-              <span className="text-sm font-medium">{session ? session.user.name.split(' ')[0] : "Sign in"}</span>
-              <User className="h-5 w-5" />
-            </div>
-            <div className="hidden md:flex flex-col">
-              <span className="text-xs">Hello, {session ? session.user.name.split(' ')[0] : "sign in"}</span>
-              <span className="text-sm font-bold">Account & Lists</span>
-            </div>
-          </Link>
+          <div className="group relative">
+            <Link
+              href={session ? "/orders" : ("/login" as any)}
+              className="flex items-center p-2 border border-transparent hover:border-white rounded-sm leading-tight whitespace-nowrap"
+            >
+              <div className="md:hidden flex items-center gap-1">
+                <span className="text-sm font-medium">{session ? session.user.name.split(' ')[0] : "Sign in"}</span>
+                <User className="h-5 w-5" />
+              </div>
+              <div className="hidden md:flex flex-col">
+                <span className="text-xs">Hello, {session ? session.user.name.split(' ')[0] : "sign in"}</span>
+                <span className="text-sm font-bold">Account & Lists</span>
+              </div>
+            </Link>
+            
+            {/* Account Dropdown (Simplified) */}
+            {session && (
+              <div className="absolute top-full right-0 w-48 bg-white text-black shadow-xl border border-gray-200 hidden group-hover:block z-50 py-2 rounded-sm">
+                <Link href="/orders" className="block px-4 py-2 hover:bg-gray-100 text-sm">Your Orders</Link>
+                <div className="border-t border-gray-100 my-1" />
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-medium"
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Returns & Orders (Hidden on Tablet/Mobile) */}
           <Link href="/orders" className="hidden lg:flex flex-col p-2 border border-transparent hover:border-white rounded-sm cursor-pointer leading-tight whitespace-nowrap">
@@ -285,7 +316,7 @@ const NavbarContent = () => {
               {/* Products */}
               {productSuggestions.map(product => (
                 <li 
-                  key={product.id}
+                  key={product.id} 
                   onClick={() => {
                     router.push(`/product/${product.id}`);
                     setSearch("");
@@ -399,7 +430,7 @@ const NavbarContent = () => {
             </div>
 
             {/* Section: Shop by Category */}
-            <div className="py-3">
+            <div className="py-3 border-b border-gray-200">
               <h3 className="px-6 py-2 text-lg font-bold">Shop by Category</h3>
               <ul className="text-sm">
                 {categories.map((cat) => (
@@ -416,6 +447,37 @@ const NavbarContent = () => {
                   </li>
                 ))}
               </ul>
+            </div>
+
+            {/* Section: Help & Settings */}
+            <div className="py-3">
+               <h3 className="px-6 py-2 text-lg font-bold">Help & Settings</h3>
+               <ul className="text-sm">
+                 <li 
+                   onClick={() => { router.push('/orders'); setIsSidebarOpen(false); }}
+                   className="px-6 py-3 hover:bg-gray-100 cursor-pointer"
+                 >
+                   Your Account
+                 </li>
+                 <li className="px-6 py-3 hover:bg-gray-100 cursor-pointer">
+                   Customer Service
+                 </li>
+                 {session ? (
+                   <li 
+                     onClick={handleLogout}
+                     className="px-6 py-3 hover:bg-gray-100 cursor-pointer font-medium text-red-600 hover:text-red-700"
+                   >
+                     Sign Out
+                   </li>
+                 ) : (
+                   <li 
+                     onClick={() => { router.push('/login'); setIsSidebarOpen(false); }}
+                     className="px-6 py-3 hover:bg-gray-100 cursor-pointer"
+                   >
+                     Sign In
+                   </li>
+                 )}
+               </ul>
             </div>
           </div>
         </div>
