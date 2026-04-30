@@ -36,10 +36,8 @@ services:
       image: postgres:18
       container_name: amazon-db
       restart: always
-      environment:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: Ansh@1234
-        POSTGRES_DB: amazonclone
+      env_file:
+        - .env
       ports:
         - "5432:5432"
       healthcheck:
