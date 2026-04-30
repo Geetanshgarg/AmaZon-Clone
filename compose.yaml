@@ -1,0 +1,72 @@
+services:
+  server:
+    image: 753593142811.dkr.ecr.ap-south-1.amazonaws.com/amazon-server:latest
+    container_name: amazon-server
+    env_file:
+      - .env
+    networks:
+      - amazon-network
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  web:
+    image: 753593142811.dkr.ecr.ap-south-1.amazonaws.com/amazon-web:latest
+    container_name: amazon-web
+    networks:
+      - amazon-network
+    env_file:
+      - .env
+    depends_on:
+      server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+  db:
+      image: postgres:18
+      container_name: amazon-db
+      restart: always
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: Ansh@1234
+        POSTGRES_DB: amazonclone
+      ports:
+        - "5432:5432"
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+      volumes:
+        - db_data:/var/lib/postgresql
+      networks:
+        - amazon-network
+  nginx:
+    image: nginx:alpine
+    container_name: amazon-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - web
+      - server
+    networks:
+      - amazon-network
+networks:
+  amazon-network:
+    driver: bridge
+volumes:
+  db_data:
+
+
