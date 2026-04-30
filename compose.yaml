@@ -19,36 +19,38 @@ services:
   web:
     image: 753593142811.dkr.ecr.ap-south-1.amazonaws.com/amazon-web:latest
     container_name: amazon-web
-    networks:
-      - amazon-network
     env_file:
       - .env
+    networks:
+      - amazon-network
     depends_on:
       server:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
       interval: 10s
       timeout: 5s
       retries: 5
     restart: unless-stopped
+
   db:
-      image: postgres:18
-      container_name: amazon-db
-      restart: always
-      env_file:
-        - .env
-      ports:
-        - "5432:5432"
-      healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U postgres"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
-      volumes:
-        - db_data:/var/lib/postgresql
-      networks:
-        - amazon-network
+    image: postgres:18
+    container_name: amazon-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - amazon-network
+
   nginx:
     image: nginx:alpine
     container_name: amazon-nginx
@@ -57,14 +59,22 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - web
-      - server
+      web:
+        condition: service_healthy
+      server:
+        condition: service_healthy
     networks:
       - amazon-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
 networks:
   amazon-network:
     driver: bridge
+
 volumes:
   db_data:
-
-
